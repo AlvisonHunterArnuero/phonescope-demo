@@ -1,0 +1,400 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────── */
+:root {
+  --bg:        #060c18;
+  --bg-card:   #0a1120;
+  --bg-input:  #07101f;
+  --cyan:      #00e5ff;
+  --teal:      #1de9b6;
+  --gold:      #ffd740;
+  --green:     #00e676;
+  --red:       #ff5252;
+  --violet:    #7c4dff;
+  --text:      #ddeeff;
+  --text-dim:  #5a7a9a;
+  --border:    rgba(0, 229, 255, 0.15);
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.25); border-radius: 2px; }
+
+/* ─── Gradient title ─────────────────────────────────────────── */
+.title-gradient {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, #c8e8ff 0%, #00e5ff 45%, #1de9b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  /* Desktop size */
+  font-size: 52px;
+}
+
+/* Mobile: shrink title so it fits on one or two lines cleanly */
+@media (max-width: 480px) {
+  .title-gradient {
+    font-size: 36px;
+  }
+}
+@media (min-width: 481px) and (max-width: 640px) {
+  .title-gradient {
+    font-size: 42px;
+  }
+}
+
+/* ─── Scanlines ──────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.025) 3px,
+    rgba(0,0,0,0.025) 4px
+  );
+}
+
+/* ─── Animations ─────────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; }
+  50%       { opacity: 0.5; box-shadow: 0 0 14px currentColor; }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes sweep-btn {
+  from { left: -60%; }
+  to   { left: 120%; }
+}
+@keyframes scan-line {
+  0%   { top: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.anim-fade-up   { animation: fade-up 0.4s ease forwards; }
+.anim-spin-slow { animation: spin-slow 8s linear infinite; }
+.anim-blink     { animation: blink 1s step-end infinite; }
+.anim-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* ─── Result card responsive helpers ────────────────────────── */
+
+/* Phone number in result card */
+.result-phone-number {
+  font-family: 'Orbitron', monospace;
+  font-size: 26px;
+  font-weight: 700;
+  color: #ddeeff;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  word-break: break-all;
+}
+@media (max-width: 480px) {
+  .result-phone-number {
+    font-size: 18px;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Top bar of result card */
+.result-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.35);
+  border-bottom: 1px solid rgba(0,229,255,0.07);
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Hero section of result card */
+.result-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  border-bottom: 1px solid rgba(0,229,255,0.07);
+  flex-wrap: wrap;
+}
+
+/* On mobile: flag left, number+badge stacked right */
+.result-hero-flag {
+  flex-shrink: 0;
+}
+.result-hero-number {
+  flex: 1;
+  min-width: 0;
+}
+.result-hero-badge {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .result-hero {
+    padding: 16px;
+    gap: 12px;
+    /* flag on the left, number+badge column on the right */
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "flag number"
+      "flag badge";
+    align-items: start;
+  }
+  .result-hero-flag  { grid-area: flag;   align-self: center; }
+  .result-hero-number { grid-area: number; }
+  .result-hero-badge  { grid-area: badge;  margin-top: 8px; }
+}
+
+/* Data grid cells */
+.result-cell {
+  padding: 18px 24px;
+  border-right: 1px solid rgba(0,229,255,0.05);
+  border-bottom: 1px solid rgba(0,229,255,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+@media (max-width: 480px) {
+  .result-cell {
+    padding: 14px 16px;
+  }
+}
+
+.result-cell-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(90,122,154,0.55);
+  text-transform: uppercase;
+}
+
+.result-cell-value {
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.result-cell-value.accent {
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  letter-spacing: 0.06em;
+}
+.result-cell-value.normal {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: #ddeeff;
+}
+@media (max-width: 480px) {
+  .result-cell-value.accent {
+    font-size: 18px;
+  }
+  .result-cell-value.normal {
+    font-size: 14px;
+  }
+}
+
+/* Footer row of result card */
+.result-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .result-footer {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Search bar responsive */
+.search-bar {
+  display: flex;
+  align-items: center;
+  height: 68px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,229,255,0.2);
+  background: rgba(7,16,31,0.95);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+@media (max-width: 480px) {
+  .search-bar {
+    height: 58px;
+    border-radius: 12px;
+  }
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 18px;
+  color: #ddeeff;
+  letter-spacing: 0.07em;
+  caret-color: #00e5ff;
+  padding: 0;
+}
+@media (max-width: 480px) {
+  .search-input {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+}
+
+.verify-btn {
+  margin: 10px 10px 10px 0;
+  padding: 0 24px;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid rgba(220,235,255,0.4);
+  background: rgba(10,17,32,0.9);
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #ffffff;
+  flex-shrink: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+  cursor: pointer;
+}
+@media (max-width: 480px) {
+  .verify-btn {
+    padding: 0 16px;
+    height: 38px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    margin: 8px 8px 8px 0;
+    border-radius: 8px;
+  }
+}
+
+/* Line type row */
+.result-linetype {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0,229,255,0.07);
+  flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .result-linetype {
+    padding: 12px 16px;
+  }
+}
+
+/* ─── Page layout ────────────────────────────────────────────── */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+@media (max-width: 480px) {
+  .page-wrapper {
+    padding: 40px 16px;
+    justify-content: flex-start;
+  }
+}
+
+.content-col {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 720px;
+}
+
+/* Header spacing */
+.page-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+@media (max-width: 480px) {
+  .page-header {
+    margin-bottom: 32px;
+  }
+}
+
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  margin-bottom: 24px;
+  background: rgba(0,229,255,0.04);
+  border: 1px solid rgba(0,229,255,0.18);
+}
+@media (max-width: 480px) {
+  .page-badge {
+    margin-bottom: 18px;
+    padding: 5px 12px;
+  }
+}
+
+.page-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: rgba(160,200,230,0.45);
+}
+@media (max-width: 480px) {
+  .page-subtitle {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+}
+
+.search-section {
+  margin-bottom: 24px;
+}
+@media (max-width: 480px) {
+  .search-section {
+    margin-bottom: 20px;
+  }
+}
