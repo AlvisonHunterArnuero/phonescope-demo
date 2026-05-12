@@ -6,28 +6,39 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.15.0",
+    "lucide-react": "^0.469.0",
     "next": "^15.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.6.0",
-    "lucide-react": "^0.469.0",
-    "@radix-ui/react-slot": "^1.1.1",
-    "framer-motion": "^11.15.0"
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
-    "postcss": "^8",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^15.3.2"
+    "eslint-config-next": "^15.3.2",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "postcss": "^8",
+    "tailwindcss": "^4.0.0",
+    "ts-jest": "^29.4.9",
+    "typescript": "^5",
+    "whatwg-fetch": "^3.6.20"
   }
 }
