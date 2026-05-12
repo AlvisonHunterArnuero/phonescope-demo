@@ -170,6 +170,57 @@ Make sure to add `VERIPHONE_API_KEY` to your Vercel project's environment variab
 
 ---
 
-## License
+## TEST REFERENCE
+This project uses Jest and React Testing Library to verify component behavior, API routes, and utility functions.
 
+#### Test Structure
+All tests live inside the __tests__ directory, mirrored by domain:
+
+```text
+__tests__/
+├── __mocks__/
+│   ├── fileMock.ts      # stubs image/font imports
+│   └── styleMock.ts     # stubs CSS imports
+├── api/
+│   └── verify.test.ts   # 10 tests — 400/500/200 cases, mocks next/server + fetch
+├── components/
+│   ├── ErrorCard.test.tsx    # 5 tests
+│   ├── LoadingCard.test.tsx  # 3 tests
+│   ├── PhoneInput.test.tsx   # 14 tests — rendering, loading state, submit, chips
+│   └── ResultCard.test.tsx   # 25 tests — valid/invalid, optional fields, type variants
+└── lib/
+    ├── types.test.ts    # 8 tests — QUICK_EXAMPLES shape and integrity
+    └── utils.test.ts    # 16 tests — cn(), flagUrl(), getPhoneTypeConfig(), formatTimestamp()
+```
+
+Running Tests
+You can use the following commands to execute the test suite:
+
+Run all tests: (Or use npx jest directly)
+```bash
+npm test
+```
+
+Run tests without coverage data:
+```bash
+npx jest --no-coverage
+```
+
+Troubleshooting Configuration Note
+The project uses jest.config.js instead of a TypeScript-based configuration file to remove the strict local requirement for ts-node.
+
+If you encounter issues where specific matchers like toBeInTheDocument or toBeDisabled are not recognized, verify that your jest.config.js uses the correct setup array key:
+
+```javascript
+// jest.config.js
+module.exports = {
+  // ... other config
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+};
+```
+
+## License
 MIT
+
+### Proudly created by Alvison Hunter Arnuero
+Last updated: Tuesday, May 12th, 2026
